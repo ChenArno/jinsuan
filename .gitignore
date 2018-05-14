@@ -33,6 +33,7 @@ pids
 wxframework
 sdk
 bmwidget
+libusbcamera
 # files for the dex VM
 *.dex
 

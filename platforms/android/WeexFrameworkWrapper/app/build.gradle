@@ -108,8 +108,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':wxframework')
 
-
-
     compile project(':usbSerialForAndroid')
     compile 'com.aliyun.dpa:oss-android-sdk:+'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
