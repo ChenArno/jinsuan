@@ -1,6 +1,6 @@
 <template>
   <div class="cont">
-    <div class="shop" v-if="isShow">
+    <div class="shop" v-if="PageShow">
       <image class="shop-cell" src="bmlocal://assets/shop.png"></image>
     </div>
     <div class="label">
@@ -18,7 +18,7 @@
 const globalEvent = weex.requireModule("globalEvent");
 const utils = weex.requireModule("utils");
 export default {
-  props: ["isShow"],
+  props: ["PageShow"],
   data() {
     return {};
   },

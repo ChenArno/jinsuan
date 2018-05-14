@@ -2,8 +2,8 @@
   <div>
 
     <head ref="head" @onclick="menuClick" @isopenRun="openRun=false"></head>
-    <background :openRun="openRun" :startTime="startTime" @onstart="response" :next="next" @getImage="getImage" @isopenRun="openRun=true">
-      <startPage v-if="next == 0"></startPage>
+    <background :openRun="openRun" :startTime="startTime" @response="response" :next="next" @getImage="getImage" @isopenRun="openRun=true">
+      <startPage v-if="next == 0" :PageShow="PageShow"></startPage>
       <picter v-if="next == 1" :picture="src" :listGdaiLabel="listGdaiLabel" @nextStep="nextStep" @orderPay="orderPay"></picter>
       <order v-if="next == 2" @nextStep="nextStep" :orderResult="orderResult"></order>
       <setting v-if="setShow" @onclick="menuClick"></setting>
@@ -33,6 +33,7 @@ export default {
       deviceSerial: "",
       groupUuid: "",
       next: 0,
+      PageShow:true,
       startTime: false,
       show: false,
       src: "",
@@ -76,6 +77,7 @@ export default {
       this.next = 0;
       if (val) {
         this.show = false;
+        this.PageShow = true;
         return;
       }
       this.startTime = false;
@@ -93,6 +95,9 @@ export default {
     },
     getImage({ localPath, netPath, weight }, count) {
       if (!localPath || !localPath[1]) {
+        if(count && count == 3){
+          this.PageShow = false;
+        }
         this.show = false;
         return;
       }

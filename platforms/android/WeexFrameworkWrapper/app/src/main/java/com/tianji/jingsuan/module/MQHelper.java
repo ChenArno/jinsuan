@@ -192,6 +192,7 @@ public class MQHelper {
                         public void handleShutdownSignal(String consumerTag, ShutdownSignalException sig) {
                             super.handleShutdownSignal(consumerTag, sig);
                             System.out.println("当channel和connection关闭执行的回调:" + consumerTag + ",sig:" + sig.getMessage());
+                            Log.i(TAG, "handleShutdownSignal: 结束");
                         }
 
                     });

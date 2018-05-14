@@ -36,21 +36,28 @@ export default {
   eros: {
     appeared() {
       this.$refs.camera.uvcInit();
+    },
+    beforeBackAppear(params, options) {
+      let { name } = params;
+      this.$emit("isopenRun");
+      if (name && name === "train") {
+        this.$refs.camera.uvcInitAgain();
+      }
     }
   },
   mounted() {
     this.dataListen();
-    globalEvent.addEventListener("viewDidAppear", ({ type }) => {
-      if (type == "back") {
-        this.$emit("isopenRun");
-        this.$storage.get("router.backParams").then(({ name }) => {
-          if (name === "train") {
-            this.$refs.camera.uvcInitAgain();
-          }
-          this.$storage.deleteSync("router.backParams");
-        });
-      }
-    });
+    // globalEvent.addEventListener("viewDidAppear", ({ type }) => {
+    //   if (type == "back") {
+    //     this.$emit("isopenRun");
+    //     this.$storage.get("router.backParams").then(({ name }) => {
+    //       if (name === "train") {
+    //         this.$refs.camera.uvcInitAgain();
+    //       }
+    //       this.$storage.deleteSync("router.backParams");
+    //     });
+    //   }
+    // });
   },
   watch: {
     startTime(val) {
@@ -70,12 +77,12 @@ export default {
       this.zero = this.$getDataSync("zero")
         ? parseInt(this.$getDataSync("zero"))
         : 0;
-
       if (val <= 25) {
         //处理不正常重量
-        this.$emit("onstart", true);
+        this.$emit("response", true);
         return;
       }
+      this.$emit("getImage", {}, this.countdown);
       if (!this.isPlaying) {
         utils.playSound(1);
         this.isPlaying = true;
@@ -85,7 +92,7 @@ export default {
     countdown(val) {
       if (val < 2) {
         this.isPlaying = false;
-        this.$emit("onstart", false);
+        this.$emit("response", false);
         utils.getStandard(res => {
           this.actualWeight = parseInt(res);
           this.$refs.camera.photo(val => {

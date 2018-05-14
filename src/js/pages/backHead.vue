@@ -1,7 +1,7 @@
 <template>
   <div class="head">
     <div class="back" @click="goBack">
-      <text class="iconfont">&#xe612;</text>
+      <text class="iconfont" @click="goBack">&#xe612;</text>
     </div>
     <div class="menu">
       <slot></slot>
@@ -71,6 +71,7 @@ export default {
       }, 1000);
     },
     goBack() {
+      this.$console(this.isnotAllow);
       if (this.isnotAllow) {
         this.$router.setBackParams({
           name: "train"

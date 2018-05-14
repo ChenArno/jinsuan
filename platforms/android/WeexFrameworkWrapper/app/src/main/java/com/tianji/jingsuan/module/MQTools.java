@@ -31,6 +31,7 @@ public class MQTools extends WXComponent<View> {
     private Boolean DEBUG = false;
     private MQHelper mqHelper;
     private WXSDKInstance mWXSDKInstance;
+    private View view;
 
     public MQTools(WXSDKInstance instance, WXDomObject dom, WXVContainer parent) {
         super(instance, dom, parent);
@@ -41,7 +42,7 @@ public class MQTools extends WXComponent<View> {
 
     @Override
     protected View initComponentHostView(@NonNull Context context) {
-        View view = new View(context);
+        view = new View(context);
 
         return view;
     }
@@ -74,6 +75,13 @@ public class MQTools extends WXComponent<View> {
 //                connectMqServer(msg, mac);
                 while (true) { // MQ创建通道失败要进行重新创建,MQ服务器连接失败要进行重连
 //                    if(mqHelper.getConn() != null) return;
+                    try {
+                        Thread.sleep(500);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.i(TAG, "error: " + e.toString());
+                    }
+                    Log.i(TAG, "mqInit");
                     Boolean isConnect = mqHelper.connectRabbitMQServer(mqObject);
                     if (isConnect) {
                         System.out.println("MQ服务器连接成功");
@@ -95,16 +103,11 @@ public class MQTools extends WXComponent<View> {
 //                        String tjmqVirtualHost = jsonObject.getString("tjmqVirtualHost");
 //
 //                        succ = mqHelper.connectRabbitMQServer(tjmqUser, tjmqSecret, tjmqVirtualHost, tjmqAddress, tjmqPort);
-//                    succ = mqHelper.connectRabbitMQServer("admin1","123456",tjmqVirtualHost,"172.16.0.192",5672);
+//                    //  succ = mqHelper.connectRabbitMQServer("admin1","123456",tjmqVirtualHost,"172.16.0.192",5672);
 //                        if (succ) {
 //                            mqHelper.createChannel(mac,null,null);
 //                        }
-                    try {
-                        Thread.sleep(500);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.i(TAG, "error: " + e.toString());
-                    }
+
                 }
             }
         }).start();
