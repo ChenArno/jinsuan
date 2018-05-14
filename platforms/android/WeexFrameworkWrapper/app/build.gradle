@@ -1,0 +1,130 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
+    flavorDimensions 'default'
+    defaultConfig {
+        applicationId APPLICATION_ID
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 9
+        versionName "1.0.9"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "x86"
+            abiFilters "armeabi"
+        }
+    }
+
+    signingConfigs {
+        eros {
+            keyAlias 'vanz'
+            keyPassword 'fz123789'
+            storeFile file('../vanz.jks')
+            storePassword 'fz123789'
+            v2SigningEnabled false
+        }
+    }
+
+
+    buildTypes {
+        release {
+            //开启代码混淆
+            minifyEnabled false
+            // 移除无用的resource文件
+//            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.eros
+            manifestPlaceholders = [UMENG_APP_KEY   : UMENG_APPKEY,
+                                    GETUI_APP_ID    : GETUI_APPID,
+                                    GETUI_APP_KEY   : GETUI_APPKEY,
+                                    GETUI_APP_SECRET: GETTUI_APPSECRET,
+                                    APP_ID          : APPLICATION_ID
+            ]
+        }
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.eros
+            manifestPlaceholders = [UMENG_APP_KEY   : UMENG_APPKEY,
+                                    GETUI_APP_ID    : GETUI_APPID,
+                                    GETUI_APP_KEY   : GETUI_APPKEY,
+                                    GETUI_APP_SECRET: GETTUI_APPSECRET,
+                                    APP_ID          : APPLICATION_ID
+            ]
+        }
+
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+
+    productFlavors {
+        samplechannel {
+            dimension 'default'
+        }
+//
+//        yingyongbao {
+//            dimension 'default'
+//        }
+    }
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['../wxframework/libs']
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    flatDir {
+
+        dirs '../wxframework/libs', 'libs'
+
+    }
+    google()
+}
+
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile "com.android.support:support-v4:${PROJECT_SUPPORTLIBVERSION}"
+    testCompile 'junit:junit:4.12'
+    compile project(':wxframework')
+
+
+    compile project(':usbSerialForAndroid')
+    compile 'com.aliyun.dpa:oss-android-sdk:+'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.squareup.okio:okio:1.9.0'
+
+    implementation 'com.blankj:utilcode:1.11.1'//mac地址
+    // 4.2.0与服务器使用的版本一致
+    compile 'com.rabbitmq:amqp-client:4.2.0'
+
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+//    compile 'cn.yipianfengye.android:zxing-library:2.2'
+//    compile 'com.google.zxing:core:3.2.1'      //zxing核心依赖
+//    compile 'com.journeyapps:zxing-android-embedded:3.4.0'  //生成二维码依赖 在wxframework存在
+    compile 'com.pgyersdk:sdk:2.8.1'
+
+    compile 'com.zyao89:zloading:1.1.2'
+//    compile project(path: ':libusbcamera')
+    compile 'com.github.jiangdongguo:AndroidUSBCamera:2.1.0'
+}
