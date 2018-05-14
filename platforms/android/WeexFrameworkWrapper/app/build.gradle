@@ -109,6 +109,7 @@ dependencies {
     compile project(':wxframework')
 
 
+
     compile project(':usbSerialForAndroid')
     compile 'com.aliyun.dpa:oss-android-sdk:+'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
@@ -126,5 +127,7 @@ dependencies {
 
     compile 'com.zyao89:zloading:1.1.2'
 //    compile project(path: ':libusbcamera')
+
     compile 'com.github.jiangdongguo:AndroidUSBCamera:2.1.0'
+
 }

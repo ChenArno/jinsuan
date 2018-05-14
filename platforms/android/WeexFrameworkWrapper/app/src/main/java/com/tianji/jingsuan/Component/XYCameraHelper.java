@@ -145,7 +145,7 @@ public class XYCameraHelper {
     }
 
     public UsbManager getUsbManager(Context context){
-        return (UsbManager)context.getSystemService(Context.USB_SERVICE);
+        return (UsbManager) context.getSystemService(Context.USB_SERVICE);
 //        return mUSBMonitor.getUsbManager();
     }
 
